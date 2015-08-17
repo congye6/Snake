@@ -30,6 +30,10 @@ public class Point {
 	public void addY(){
 		y++;
 	}
-	
-	
+	public void minusX(){
+		x--;
+	}
+	public void minusY(){
+		y--;
+	}
 }
