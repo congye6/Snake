@@ -1,6 +1,10 @@
 package model;
 
 public class SnakeHead {
+	public Point getPoint() {
+		return point;
+	}
+
 	private Point point;
 	private Direction direction;
 	

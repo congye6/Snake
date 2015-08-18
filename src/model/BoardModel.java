@@ -1,15 +1,35 @@
 package model;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 public class BoardModel extends Observable{
 
-	List<SnakePO> snake;
-	List<SnakePO> walls;
-	SnakePO food;
-	SnakeHead head;
+	private List<SnakePO> snake;
+	private List<SnakePO> walls;
+	private SnakePO food;
+	private SnakeHead head;
+	
+	
+	/**
+	 * 通过方向调用方法
+	 */
+	private static Map<Direction,Method> directionMap=new HashMap<>();
+	static{
+		try {
+			directionMap.put(Direction.UP,SnakeHead.class.getMethod("up"));
+			directionMap.put(Direction.DOWN, SnakeHead.class.getMethod("down"));
+			directionMap.put(Direction.LEFT, SnakeHead.class.getMethod("left"));
+			directionMap.put(Direction.RIGHT, SnakeHead.class.getMethod("right"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public BoardModel() {
 		initial();
@@ -79,6 +99,29 @@ public class BoardModel extends Observable{
 			walls.add(new SnakePO(new Point(34, i)));
 		}
 	}
+	
+	private void move(){
+		Thread move=new Thread(){
+			@Override
+			public void run(){
+				while(true){
+					Method method=directionMap.get(head.getDirection());
+					try {
+						method.invoke(head);
+						snake.add(new SnakePO(head.getPoint()));
+						snake.remove(snake.size()-1);
+						Thread.sleep(2000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					} 
+				}
+			}
+		};
+		
+		
+		move.start();
+	}
+	
 
 
 	/**
