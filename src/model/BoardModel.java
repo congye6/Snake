@@ -7,25 +7,39 @@ import java.util.Observable;
 public class BoardModel extends Observable{
 
 	List<SnakePO> snake;
-	SnakeHead head;
 	List<SnakePO> walls;
+	SnakePO food;
+	SnakeHead head;
 	
 	public BoardModel() {
 		initial();
 	}
 
 
+	/**
+	 * 初始化
+	 * @author congye6
+	 */
 	private void initial(){
 		buildWall();
 		initialSnake();
+		createFood();
 	}
 
-	
+	private void createFood(){
+		Point p;
+		do{
+			int randomX=(int)(Math.random()*35);
+			int randomY=(int)(Math.random()*20);
+			p=new Point(randomX, randomY);
+		}while(!isWall(p)&&!isSnake(p));
+		food=new SnakePO(p);
+	}
 	
 	
 	private void initialSnake() {
-		int randomX=(int)(Math.random()*10)+10;
-		int randomY=(int)(Math.random()*20)+10;
+		int randomX=(int)(Math.random()*20)+10;
+		int randomY=(int)(Math.random()*10)+10;
 		snake=new ArrayList<>();
 		head=new SnakeHead(new Point(randomX, randomY), Direction.DOWN);
 		snake.add(new SnakePO(new Point(randomX, randomY-1)));
@@ -67,7 +81,33 @@ public class BoardModel extends Observable{
 	}
 
 
-
+	/**
+	 * 控制方向
+	 * @author congye6
+	 */
+	public void up(){
+		if(head.getDirection()==Direction.DOWN)
+			return;
+		head.setDirection(Direction.UP);
+	}
+	
+	public void down(){
+		if(head.getDirection()==Direction.UP)
+			return;
+		head.setDirection(Direction.DOWN);
+	}
+	
+	public void left(){
+		if(head.getDirection()==Direction.RIGHT)
+			return;
+		head.setDirection(Direction.LEFT);
+	}
+	
+	public void right(){
+		if(head.getDirection()==Direction.LEFT)
+			return;
+		head.setDirection(Direction.RIGHT);
+	}
 
 	/**
 	 * 通知更新方法，请在子类中需要通知观察者的地方调用此方法
