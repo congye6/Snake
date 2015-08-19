@@ -1,6 +1,6 @@
 package model;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ import java.util.Observable;
 
 public class BoardModel extends Observable{
 
+	private GameModel game;
+	
 	private List<SnakePO> snake;
 	private List<SnakePO> walls;
 	private SnakePO food;
@@ -40,10 +42,11 @@ public class BoardModel extends Observable{
 	 * 初始化
 	 * @author congye6
 	 */
-	private void initial(){
+	 void initial(){
 		buildWall();
 		initialSnake();
 		createFood();
+		move();
 	}
 
 	private void createFood(){
@@ -100,6 +103,10 @@ public class BoardModel extends Observable{
 		}
 	}
 	
+	/**
+	 * 移动
+	 * @author congye6
+	 */
 	private void move(){
 		Thread move=new Thread(){
 			@Override
@@ -108,8 +115,18 @@ public class BoardModel extends Observable{
 					Method method=directionMap.get(head.getDirection());
 					try {
 						method.invoke(head);
-						snake.add(new SnakePO(head.getPoint()));
-						snake.remove(snake.size()-1);
+						Point p=head.getPoint();
+						//撞墙
+						if(isWall(p)||isSnake(p)){
+							game.gameOver();
+							break;
+						}
+						snake.add(new SnakePO(new Point(p.getX(), p.getY())));
+						//吃到食物
+						if(!p.equals(food.getPoint()))
+							snake.remove(snake.size()-1);
+						else
+							createFood();
 						Thread.sleep(2000);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -117,13 +134,9 @@ public class BoardModel extends Observable{
 				}
 			}
 		};
-		
-		
 		move.start();
 	}
 	
-
-
 	/**
 	 * 控制方向
 	 * @author congye6
@@ -152,6 +165,10 @@ public class BoardModel extends Observable{
 		head.setDirection(Direction.RIGHT);
 	}
 
+	
+	public void setGame(GameModel game) {
+		this.game = game;
+	}
 	/**
 	 * 通知更新方法，请在子类中需要通知观察者的地方调用此方法
 	 * @param data
