@@ -1,10 +1,16 @@
 package view;
 
 import java.awt.Graphics;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 
-public class BoardPanel extends JPanel{
+import model.SnakePO;
+import model.UpdateMessage;
+
+public class BoardPanel extends JPanel implements Observer{
 	
 	
 	private static final  int HEIGHT_OF_TITLE=50; 
@@ -44,5 +50,12 @@ public class BoardPanel extends JPanel{
 		g.drawImage(Images.EDGE1, 0, HEIGHT_OF_TITLE+HEIGHT_OF_BOARD, 
 								MainFrame.WIDTH, MainFrame.HEIGHT, 
 								2, 0, 381, 40,  null);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		UpdateMessage message=(UpdateMessage)arg;
+		List<SnakePO> snake=(List<SnakePO>)message.getValue();		
+		
 	}
 }

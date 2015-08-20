@@ -27,6 +27,7 @@ public class MainFrame {
 		board=new BoardPanel();
 		
 		frame.add(board);
+		frame.addKeyListener(new MyKeyListener());
 
 		frame.setVisible(true);
 	}
