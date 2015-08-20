@@ -6,10 +6,8 @@ public class MainFrame {
 	/**
 	 * frame大小
 	 */
-	private static final int HEIGHT=500;
-	private static final int WIDTH=360;
-	
-	
+	static final int HEIGHT=520;
+	static final int WIDTH=800;
 	
 	private JFrame frame;
 	
@@ -33,7 +31,9 @@ public class MainFrame {
 		frame.setVisible(true);
 	}
 	
-	
+	public static void main(String[] args) {
+		MainFrame mainFrame=new MainFrame();
+	}
 	
 	
 }
