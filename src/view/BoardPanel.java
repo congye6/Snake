@@ -18,6 +18,8 @@ public class BoardPanel extends JPanel implements Observer{
 	private static final  int WIDTH_OF_EDGE=50; 
 	private static final  int WIDTH_OF_CHESS=20;
 
+	List<SnakePO> snake;
+	
 	public BoardPanel() {
 		this.setLayout(null);
 	}
@@ -50,12 +52,29 @@ public class BoardPanel extends JPanel implements Observer{
 		g.drawImage(Images.EDGE1, 0, HEIGHT_OF_TITLE+HEIGHT_OF_BOARD, 
 								MainFrame.WIDTH, MainFrame.HEIGHT, 
 								2, 0, 381, 40,  null);
+		
+		/**
+		 * 蛇
+		 */
+		if(snake==null)
+			return;
+		SnakePO head=snake.get(0);
+		int x=head.getPoint().getX();
+		int y=head.getPoint().getY();
+		g.drawImage(Images.HEAD, WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
+		for(int i=1;i<snake.size();i++){
+			SnakePO body=snake.get(i);
+			x=body.getPoint().getX();
+			y=body.getPoint().getY();
+			g.drawImage(Images.BODY, WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
+		}
+		
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		UpdateMessage message=(UpdateMessage)arg;
-		List<SnakePO> snake=(List<SnakePO>)message.getValue();		
-		
+		snake=(List<SnakePO>)message.getValue();
+		repaint();
 	}
 }

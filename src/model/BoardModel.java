@@ -33,9 +33,6 @@ public class BoardModel extends Observable{
 		}
 	}
 	
-	public BoardModel() {
-		initial();
-	}
 
 
 	/**
@@ -67,6 +64,7 @@ public class BoardModel extends Observable{
 		head=new SnakeHead(new Point(randomX, randomY), Direction.DOWN);
 		snake.add(new SnakePO(new Point(randomX, randomY-1)));
 		snake.add(new SnakePO(new Point(randomX, randomY)));
+		this.updateChange(new UpdateMessage("snake", snake));
 		
 	}
 
@@ -89,6 +87,7 @@ public class BoardModel extends Observable{
 	}
 	
 	private void buildWall(){
+		walls=new ArrayList<>();
 		for(int i=0;i<7;i++){
 			walls.add(new SnakePO(new Point(0, i)));
 			walls.add(new SnakePO(new Point(34, i)));
@@ -114,6 +113,7 @@ public class BoardModel extends Observable{
 				while(true){
 					Method method=directionMap.get(head.getDirection());
 					try {
+						Thread.sleep(2000);
 						method.invoke(head);
 						Point p=head.getPoint();
 						//撞墙
@@ -127,7 +127,7 @@ public class BoardModel extends Observable{
 							snake.remove(snake.size()-1);
 						else
 							createFood();
-						Thread.sleep(2000);
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					} 

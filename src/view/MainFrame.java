@@ -32,9 +32,6 @@ public class MainFrame {
 		frame.setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		MainFrame mainFrame=new MainFrame();
-	}
 	
 	
 }

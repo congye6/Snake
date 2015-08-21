@@ -12,6 +12,7 @@ public class Images {
 	static final Image FOOD=createImage("food");
 	static final Image HEAD=createImage("head");
 	static final Image TITLE=createImage("title");
+	static final Image WALL=createImage("wall");
 	
 	
 	private static Image createImage(String name){
