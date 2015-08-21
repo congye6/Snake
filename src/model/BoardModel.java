@@ -69,9 +69,14 @@ public class BoardModel extends Observable{
 	}
 
 	private boolean isSnake(Point p){
-		for(SnakePO body:snake){
-			if(body.getPoint().equals(p))
+		for(int i=0;i<snake.size()-1;i++){
+			SnakePO body=snake.get(i);
+			System.out.println(body.getPoint().getY());
+			if(body.getPoint().equals(p)){
+				System.out.println(body.getPoint().getY()+" over");
 				return true;
+			}
+				
 		}
 		return false;
 	}
@@ -113,21 +118,22 @@ public class BoardModel extends Observable{
 				while(true){
 					Method method=directionMap.get(head.getDirection());
 					try {
-						Thread.sleep(2000);
+						
 						method.invoke(head);
 						Point p=head.getPoint();
+						snake.add(new SnakePO(new Point(p.getX(), p.getY())));
+						//吃到食物
+						if(!p.equals(food.getPoint()))
+							snake.remove(0);
+						else
+							createFood();
 						//撞墙
 						if(isWall(p)||isSnake(p)){
 							game.gameOver();
 							break;
 						}
-						snake.add(new SnakePO(new Point(p.getX(), p.getY())));
-						//吃到食物
-						if(!p.equals(food.getPoint()))
-							snake.remove(snake.size()-1);
-						else
-							createFood();
-						
+						BoardModel.this.updateChange(new UpdateMessage("snake", snake));
+						Thread.sleep(500);
 					} catch (Exception e) {
 						e.printStackTrace();
 					} 

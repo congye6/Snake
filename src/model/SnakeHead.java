@@ -19,11 +19,11 @@ public class SnakeHead {
 	}
 	
 	public void up(){
-		point.addY();
+		point.minusY();
 	}
 	
 	public void down(){
-		point.minusY();
+		point.addY();
 	}
 	
 	public void left(){

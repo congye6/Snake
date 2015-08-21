@@ -9,12 +9,9 @@ public class MainFrame {
 	static final int HEIGHT=520;
 	static final int WIDTH=800;
 	
-	private JFrame frame;
+	private static JFrame frame;
 	
-	public BoardPanel getBoard() {
-		return board;
-	}
-
+	
 	private BoardPanel board;
 	
 	public  MainFrame() {
@@ -32,6 +29,13 @@ public class MainFrame {
 		frame.setVisible(true);
 	}
 	
+	public BoardPanel getBoard() {
+		return board;
+	}
+	
+	public static JFrame getFrame(){
+		return frame;
+	}
 	
 	
 }

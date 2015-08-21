@@ -64,18 +64,18 @@ public class BoardPanel extends JPanel implements Observer{
 		 */
 		if(snake==null)
 			return;
-		SnakePO head=snake.get(0);
+		SnakePO head=snake.get(snake.size()-1);
 		int x=head.getPoint().getX();
 		int y=head.getPoint().getY();
 		g.drawImage(Images.HEAD, WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
-		for(int i=1;i<snake.size();i++){
+		for(int i=0;i<snake.size()-1;i++){
 			SnakePO body=snake.get(i);
 			x=body.getPoint().getX();
 			y=body.getPoint().getY();
 			g.drawImage(Images.BODY, WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
 		}
 		
-	
+		MainFrame.getFrame().requestFocus();
 		
 	}
 
