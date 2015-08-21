@@ -1,6 +1,6 @@
 package main;
 
-import controller.GameController;
+import controller.MainController;
 import model.BoardModel;
 import model.GameModel;
 import view.MainFrame;
@@ -10,9 +10,8 @@ public class Snake {
 		MainFrame ui=new MainFrame();
 		BoardModel board=new BoardModel();
 		GameModel game=new GameModel(board);
-		GameController controller=new GameController(game, board);
+		MainController controller=new MainController(game, board);
 		board.setGame(game);
 		board.addObserver(ui.getBoard());
-		game.gameStart();
 	}
 }

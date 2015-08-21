@@ -18,10 +18,16 @@ public class BoardPanel extends JPanel implements Observer{
 	private static final  int WIDTH_OF_EDGE=50; 
 	private static final  int WIDTH_OF_CHESS=20;
 
-	List<SnakePO> snake;
+	private List<SnakePO> snake;
+	
+	private JButton startButton=new JButton(Images.START_BUTTON);
 	
 	public BoardPanel() {
 		this.setLayout(null);
+		startButton.setBounds(HEIGHT_OF_BOARD, HEIGHT_OF_BOARD+HEIGHT_OF_TITLE,
+								WIDTH_OF_EDGE, WIDTH_OF_EDGE);
+		startButton.addActionListener(new StartButtonListener());
+		this.add(startButton);
 	}
 	
 	@Override
@@ -68,6 +74,8 @@ public class BoardPanel extends JPanel implements Observer{
 			y=body.getPoint().getY();
 			g.drawImage(Images.BODY, WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
 		}
+		
+	
 		
 	}
 

@@ -13,6 +13,7 @@ public class Images {
 	static final Image HEAD=createImage("head");
 	static final Image TITLE=createImage("title");
 	static final Image WALL=createImage("wall");
+	static final ImageIcon START_BUTTON=new ImageIcon("image/start.png");
 	
 	
 	private static Image createImage(String name){
