@@ -19,6 +19,7 @@ public class BoardPanel extends JPanel implements Observer{
 	private static final  int WIDTH_OF_CHESS=20;
 
 	private List<SnakeVO> displayList;
+	private List<SnakeVO> walls;
 	
 	private JButton startButton=new JButton(Images.START_BUTTON);
 	
@@ -61,6 +62,18 @@ public class BoardPanel extends JPanel implements Observer{
 								2, 0, 381, 40,  null);
 		
 		/**
+		 * 墙
+		 */
+		if(walls!=null){
+			for(SnakeVO wall:walls){
+				int x=wall.getX();
+				int y=wall.getY();
+				g.drawImage(Images.getDisplayImage(wall.getDisplayState()),
+						WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
+			}
+		}
+		
+		/**
 		 * 蛇
 		 */
 		if(displayList==null)
@@ -79,7 +92,10 @@ public class BoardPanel extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		UpdateMessage message=(UpdateMessage)arg;
-		displayList=(List<SnakeVO>)message.getValue();
+		if(message.getKey().equals("walls"))
+			walls=(List<SnakeVO>)message.getValue();
+		else
+			displayList=(List<SnakeVO>)message.getValue();
 		
 		repaint();
 	}

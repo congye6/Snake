@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import controller.BoardController;
+import controller.GameController;
 
 public class MyKeyListener extends KeyAdapter{
 

@@ -20,7 +20,7 @@ public class BoardModel extends Observable{
 	private SnakePO food;
 	private SnakeHead head;
 	
-	private List<SnakeVO> snakeDisplay;
+	
 	/**
 	 * 通过方向调用方法
 	 */
@@ -55,11 +55,10 @@ public class BoardModel extends Observable{
 		do{
 			randomX=(int)(Math.random()*35);
 			randomY=(int)(Math.random()*20);
-		}while(!isWall(randomX,randomY)&&!isSnake(randomX,randomY));
+		}while(isWall(randomX,randomY)||isSnake(randomX,randomY));
 		food=new SnakePO(randomX,randomY);
-		SnakeVO foodView=displayFood(food);
-		snakeDisplay.add(foodView);
-		this.updateChange(new UpdateMessage("food", ));
+		List<SnakeVO> snakeDisplay=displaySnake();
+		this.updateChange(new UpdateMessage("snake", snakeDisplay));;
 	}
 	
 	
@@ -70,7 +69,7 @@ public class BoardModel extends Observable{
 		head=new SnakeHead(randomX, randomY, Direction.DOWN);
 		snake.add(new SnakePO(randomX, randomY-1));
 		snake.add(new SnakePO(randomX, randomY));
-		List<SnakeVO> snakeDisplay=displaySnake(snake);
+		List<SnakeVO> snakeDisplay=displaySnake();
 		this.updateChange(new UpdateMessage("snake", snakeDisplay));
 	}
 
@@ -109,6 +108,8 @@ public class BoardModel extends Observable{
 			walls.add(new SnakePO(0, i));
 			walls.add(new SnakePO(34, i));
 		}
+		List<SnakeVO> wallsDisplay=displayWall();
+		this.updateChange(new UpdateMessage("walls", wallsDisplay));
 	}
 	
 	/**
@@ -135,9 +136,9 @@ public class BoardModel extends Observable{
 							game.gameOver();
 							break;
 						}
-						List<SnakeVO> snakeDisplay=displaySnake(snake);
+						List<SnakeVO> snakeDisplay=displaySnake();
 						BoardModel.this.updateChange(new UpdateMessage("snake", snakeDisplay));
-						Thread.sleep(500);
+						Thread.sleep(50);
 					} catch (Exception e) {
 						e.printStackTrace();
 					} 
@@ -180,7 +181,7 @@ public class BoardModel extends Observable{
 		this.game = game;
 	}
 	
-	private List<SnakeVO> displaySnake(List<SnakePO> snake){
+	private List<SnakeVO> displaySnake(){
 		List<SnakeVO> displayList=new ArrayList<>();
 		for(int i=0;i<snake.size()-1;i++){
 			SnakePO body=snake.get(i);
@@ -188,21 +189,21 @@ public class BoardModel extends Observable{
 		}
 		SnakePO head=snake.get(snake.size()-1);
 		displayList.add(new SnakeVO(DisplayState.HEAD, head.getX(), head.getY()));
+		if(food!=null){
+			displayList.add(new SnakeVO(DisplayState.FOOD, food.getX(), food.getY()));
+		}
 		return displayList;
 	}
 	
-	private List<SnakeVO> displayWall(List<SnakePO> POList){
+	private List<SnakeVO> displayWall(){
 		List<SnakeVO> displayList=new ArrayList<>();
-		for(SnakePO po:POList){
+		for(SnakePO po:walls){
 			displayList.add(new SnakeVO(DisplayState.WALL, po.getX(), po.getY()));
 		}
 		return displayList;
 	}
 	
-	private SnakeVO displayFood(SnakePO food){
-		SnakeVO foodView=new SnakeVO(DisplayState.FOOD, food.getX(), food.getY());
-		return foodView;
-	}
+	
 	
 	/**
 	 * 通知更新方法，请在子类中需要通知观察者的地方调用此方法
