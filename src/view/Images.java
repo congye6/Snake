@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Image;
+import java.lang.reflect.Field;
 
 import javax.swing.ImageIcon;
 
@@ -18,6 +19,17 @@ public class Images {
 	
 	private static Image createImage(String name){
 		Image image=new ImageIcon("image/"+name+".png").getImage();
+		return image;
+	}
+	
+	public static Image getDisplayImage(DisplayState displayState){
+		Image image=null; 
+		try {
+			Field field=Images.class.getDeclaredField(displayState.name());
+			image=(Image) field.get(null);
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			e.printStackTrace();
+		}
 		return image;
 	}
 

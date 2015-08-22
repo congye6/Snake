@@ -18,7 +18,7 @@ public class BoardPanel extends JPanel implements Observer{
 	private static final  int WIDTH_OF_EDGE=50; 
 	private static final  int WIDTH_OF_CHESS=20;
 
-	private List<SnakePO> snake;
+	private List<SnakeVO> displayList;
 	
 	private JButton startButton=new JButton(Images.START_BUTTON);
 	
@@ -63,27 +63,24 @@ public class BoardPanel extends JPanel implements Observer{
 		/**
 		 * 蛇
 		 */
-		if(snake==null)
+		if(displayList==null)
 			return;
-		SnakePO head=snake.get(snake.size()-1);
-		int x=head.getX();
-		int y=head.getY();
-		g.drawImage(Images.HEAD, WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
-		for(int i=0;i<snake.size()-1;i++){
-			SnakePO body=snake.get(i);
-			x=body.getX();
-			y=body.getY();
-			g.drawImage(Images.BODY, WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
+		
+		for(SnakeVO vo:displayList){
+			
+			int x=vo.getX();
+			int y=vo.getY();
+			g.drawImage(Images.getDisplayImage(vo.getDisplayState()),
+					WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
 		}
-		
 		MainFrame.getFrame().requestFocus();
-		
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		UpdateMessage message=(UpdateMessage)arg;
-		snake=(List<SnakePO>)message.getValue();
+		displayList=(List<SnakeVO>)message.getValue();
+		
 		repaint();
 	}
 }
