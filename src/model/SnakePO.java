@@ -1,15 +1,23 @@
 package model;
 public class SnakePO {
 
-	private Point point;
+	private int x;
+	private int y;
 	
-	public SnakePO(Point point) {
+	public SnakePO(int x,int y) {
 		super();
-		this.point = point;
+		this.x=x;
+		this.y=y;
 	}
 
-	public Point getPoint() {
-		return point;
+	public int getX() {
+		return x;
 	}
+
+	public int getY() {
+		return y;
+	}
+
+	
 	
 }

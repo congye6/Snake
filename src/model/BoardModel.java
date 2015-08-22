@@ -47,13 +47,13 @@ public class BoardModel extends Observable{
 	}
 
 	private void createFood(){
-		Point p;
+	int randomY;
+	int randomX;
 		do{
-			int randomX=(int)(Math.random()*35);
-			int randomY=(int)(Math.random()*20);
-			p=new Point(randomX, randomY);
-		}while(!isWall(p)&&!isSnake(p));
-		food=new SnakePO(p);
+			randomX=(int)(Math.random()*35);
+			randomY=(int)(Math.random()*20);
+		}while(!isWall(randomX,randomY)&&!isSnake(randomX,randomY));
+		food=new SnakePO(randomX,randomY);
 	}
 	
 	
@@ -61,19 +61,17 @@ public class BoardModel extends Observable{
 		int randomX=(int)(Math.random()*20)+10;
 		int randomY=(int)(Math.random()*10)+10;
 		snake=new ArrayList<>();
-		head=new SnakeHead(new Point(randomX, randomY), Direction.DOWN);
-		snake.add(new SnakePO(new Point(randomX, randomY-1)));
-		snake.add(new SnakePO(new Point(randomX, randomY)));
+		head=new SnakeHead(randomX, randomY, Direction.DOWN);
+		snake.add(new SnakePO(randomX, randomY-1));
+		snake.add(new SnakePO(randomX, randomY));
 		this.updateChange(new UpdateMessage("snake", snake));
 		
 	}
 
-	private boolean isSnake(Point p){
+	private boolean isSnake(int x,int y){
 		for(int i=0;i<snake.size()-1;i++){
 			SnakePO body=snake.get(i);
-			System.out.println(body.getPoint().getY());
-			if(body.getPoint().equals(p)){
-				System.out.println(body.getPoint().getY()+" over");
+			if(body.getX()==x&&body.getY()==y){
 				return true;
 			}
 				
@@ -82,9 +80,9 @@ public class BoardModel extends Observable{
 	}
 	
 
-	private boolean isWall(Point p){
+	private boolean isWall(int x,int y){
 		for(SnakePO wall:walls){
-			if(wall.getPoint().equals(p))
+			if(wall.getX()==x&&wall.getY()==y)
 				return true;
 		}
 		
@@ -94,16 +92,16 @@ public class BoardModel extends Observable{
 	private void buildWall(){
 		walls=new ArrayList<>();
 		for(int i=0;i<7;i++){
-			walls.add(new SnakePO(new Point(0, i)));
-			walls.add(new SnakePO(new Point(34, i)));
+			walls.add(new SnakePO(0, i));
+			walls.add(new SnakePO(34, i));
 		}
 		for(int i=7;i<13;i++){
-			walls.add(new SnakePO(new Point(5, i)));
-			walls.add(new SnakePO(new Point(29, i)));
+			walls.add(new SnakePO(5, i));
+			walls.add(new SnakePO(29, i));
 		}
 		for(int i=13;i<20;i++){
-			walls.add(new SnakePO(new Point(0, i)));
-			walls.add(new SnakePO(new Point(34, i)));
+			walls.add(new SnakePO(0, i));
+			walls.add(new SnakePO(34, i));
 		}
 	}
 	
@@ -120,15 +118,14 @@ public class BoardModel extends Observable{
 					try {
 						
 						method.invoke(head);
-						Point p=head.getPoint();
-						snake.add(new SnakePO(new Point(p.getX(), p.getY())));
+						snake.add(new SnakePO(head.getX(), head.getY()));
 						//吃到食物
-						if(!p.equals(food.getPoint()))
+						if(head.getX()!=food.getX()||head.getY()!=food.getY())
 							snake.remove(0);
 						else
 							createFood();
 						//撞墙
-						if(isWall(p)||isSnake(p)){
+						if(isWall(head.getX(),head.getY())||isSnake(head.getX(),head.getY())){
 							game.gameOver();
 							break;
 						}

@@ -1,33 +1,52 @@
 package model;
 
 public class SnakeHead {
-	public Point getPoint() {
-		return point;
-	}
-
-	private Point point;
+	private static final int MAX_X=34;
+	private static final int MAX_Y=19;
+	private static final int MIN_X=0;
+	private static final int MIN_Y=0;
+	
 	private Direction direction;
+	private int x;
+	private int y;
 	
 	
-	public SnakeHead(Point head, Direction headDirection) {
-		this.point = head;
+	public SnakeHead(int x,int y, Direction headDirection) {
 		this.direction = headDirection;
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void right(){
-		point.addX();
+		x++;
+		if(x>MAX_X)
+			x=MIN_X;
 	}
 	
 	public void up(){
-		point.minusY();
+		y--;
+		if(y<MIN_Y)
+			y=MAX_Y;
 	}
 	
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 	public void down(){
-		point.addY();
+		y++;
+		if(y>MAX_Y)
+			y=MIN_Y;
 	}
 	
 	public void left(){
-		point.minusX();
+		x--;
+		if(x<MIN_X)
+			x=MAX_X;
 	}
 	
 	
