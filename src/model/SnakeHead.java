@@ -1,10 +1,10 @@
 package model;
 
 public class SnakeHead {
-	private static final int MAX_X=34;
-	private static final int MAX_Y=19;
-	private static final int MIN_X=0;
-	private static final int MIN_Y=0;
+	static final int MAX_X=34;
+	static final int MAX_Y=19;
+	static final int MIN_X=0;
+	static final int MIN_Y=0;
 	
 	private Direction direction;
 	private int x;
@@ -59,7 +59,4 @@ public class SnakeHead {
 		return direction;
 	}
 	
-	
-	
-
 }

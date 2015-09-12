@@ -11,15 +11,17 @@ import java.util.Observable;
 import view.DisplayState;
 import view.SnakeVO;
 
-public class BoardModel extends Observable{
+public class BoardModel extends BaseModel{
 
 	private GameModel game;
 	
 	private List<SnakePO> snake;
-	private List<SnakePO> walls;
+	private Wall wall=new Wall();
 	private SnakePO food;
+
 	private SnakeHead head;
 	
+	private Thread move;
 	
 	/**
 	 * 通过方向调用方法
@@ -43,7 +45,7 @@ public class BoardModel extends Observable{
 	 * @author congye6
 	 */
 	 void initial(){
-		buildWall();
+		wall.buildWall();
 		initialSnake();
 		createFood();
 		move();
@@ -55,7 +57,7 @@ public class BoardModel extends Observable{
 		do{
 			randomX=(int)(Math.random()*35);
 			randomY=(int)(Math.random()*20);
-		}while(isWall(randomX,randomY)||isSnake(randomX,randomY));
+		}while(wall.isWall(randomX,randomY)||isSnake(randomX,randomY));
 		food=new SnakePO(randomX,randomY);
 		List<SnakeVO> snakeDisplay=displaySnake();
 		this.updateChange(new UpdateMessage("snake", snakeDisplay));;
@@ -85,41 +87,18 @@ public class BoardModel extends Observable{
 	}
 	
 
-	private boolean isWall(int x,int y){
-		for(SnakePO wall:walls){
-			if(wall.getX()==x&&wall.getY()==y)
-				return true;
-		}
-		
-		return false;
-	}
-	
-	private void buildWall(){
-		walls=new ArrayList<>();
-		for(int i=0;i<7;i++){
-			walls.add(new SnakePO(0, i));
-			walls.add(new SnakePO(34, i));
-		}
-		for(int i=7;i<13;i++){
-			walls.add(new SnakePO(5, i));
-			walls.add(new SnakePO(29, i));
-		}
-		for(int i=13;i<20;i++){
-			walls.add(new SnakePO(0, i));
-			walls.add(new SnakePO(34, i));
-		}
-		List<SnakeVO> wallsDisplay=displayWall();
-		this.updateChange(new UpdateMessage("walls", wallsDisplay));
-	}
 	
 	/**
 	 * 移动
 	 * @author congye6
 	 */
 	private void move(){
-		Thread move=new Thread(){
+		if(move!=null){
+			move.stop();
+		}
+		move=new Thread(){
 			@Override
-			public void run(){
+			synchronized public void run(){
 				while(true){
 					Method method=directionMap.get(head.getDirection());
 					try {
@@ -132,13 +111,13 @@ public class BoardModel extends Observable{
 						else
 							createFood();
 						//撞墙
-						if(isWall(head.getX(),head.getY())||isSnake(head.getX(),head.getY())){
+						if(wall.isWall(head.getX(),head.getY())||isSnake(head.getX(),head.getY())){
 							game.gameOver();
 							break;
 						}
 						List<SnakeVO> snakeDisplay=displaySnake();
 						BoardModel.this.updateChange(new UpdateMessage("snake", snakeDisplay));
-						Thread.sleep(50);
+						Thread.sleep(100);
 					} catch (Exception e) {
 						e.printStackTrace();
 					} 
@@ -195,25 +174,13 @@ public class BoardModel extends Observable{
 		return displayList;
 	}
 	
-	private List<SnakeVO> displayWall(){
-		List<SnakeVO> displayList=new ArrayList<>();
-		for(SnakePO po:walls){
-			displayList.add(new SnakeVO(DisplayState.WALL, po.getX(), po.getY()));
-		}
-		return displayList;
+	
+	public Wall getWall() {
+		return wall;
 	}
 	
 	
 	
-	/**
-	 * 通知更新方法，请在子类中需要通知观察者的地方调用此方法
-	 * @param data
-	 */
-	private void updateChange(UpdateMessage message){
-		
-		super.setChanged();
-		super.notifyObservers(message);
-		
-	}
+	
 	
 }

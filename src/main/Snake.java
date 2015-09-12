@@ -13,5 +13,6 @@ public class Snake {
 		MainController controller=new MainController(game, board);
 		board.setGame(game);
 		board.addObserver(ui.getBoard());
+		board.getWall().addObserver(ui.getBoard());
 	}
 }

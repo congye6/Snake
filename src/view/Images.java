@@ -15,6 +15,8 @@ public class Images {
 	static final Image TITLE=createImage("title");
 	static final Image WALL=createImage("wall");
 	static final ImageIcon START_BUTTON=new ImageIcon("image/start.png");
+	static final ImageIcon WALL1=new ImageIcon("image/wall1.png");
+	static final ImageIcon WALL2=new ImageIcon("image/wall2.png");
 	
 	
 	private static Image createImage(String name){

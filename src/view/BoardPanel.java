@@ -1,13 +1,15 @@
 package view;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.*;
 
-import model.SnakePO;
+import controller.WallController;
 import model.UpdateMessage;
 
 public class BoardPanel extends JPanel implements Observer{
@@ -22,6 +24,8 @@ public class BoardPanel extends JPanel implements Observer{
 	private List<SnakeVO> walls;
 	
 	private JButton startButton=new JButton(Images.START_BUTTON);
+	private JButton wall1Button=new JButton(Images.WALL1);
+	private JButton wall2Button=new JButton(Images.WALL2);
 	
 	public BoardPanel() {
 		this.setLayout(null);
@@ -30,6 +34,32 @@ public class BoardPanel extends JPanel implements Observer{
 		startButton.addActionListener(new StartButtonListener());
 		startButton.setContentAreaFilled(false);
 		this.add(startButton);
+		wall1Button.setBounds(HEIGHT_OF_BOARD+WIDTH_OF_EDGE, HEIGHT_OF_BOARD+HEIGHT_OF_TITLE,
+				WIDTH_OF_EDGE, WIDTH_OF_EDGE);
+		wall1Button.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				WallController wall=new WallController();
+				wall.changeWall(0);
+			}
+			
+		});
+		wall1Button.setContentAreaFilled(false);
+		this.add(wall1Button);
+		wall2Button.setBounds(HEIGHT_OF_BOARD+2*WIDTH_OF_EDGE, HEIGHT_OF_BOARD+HEIGHT_OF_TITLE,
+				WIDTH_OF_EDGE, WIDTH_OF_EDGE);
+		wall2Button.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				WallController wall=new WallController();
+				wall.changeWall(1);
+			}
+			
+		});
+		wall2Button.setContentAreaFilled(false);
+		this.add(wall2Button);
 	}
 	
 	@Override
