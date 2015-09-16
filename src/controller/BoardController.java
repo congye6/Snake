@@ -1,28 +1,29 @@
 package controller;
 
-import model.BoardModel;
+
+import model.SnakeHead;
 
 public class BoardController {
 	
 	
 	public void up(){
-		BoardModel board=MainController.getBoardModel();
-		board.up();
+		SnakeHead head=MainController.getBoardModel().getSnake().getHead();
+		head.turnUp();
 	}
 	
 	public void down(){
-		BoardModel board=MainController.getBoardModel();
-		board.down();
+		SnakeHead head=MainController.getBoardModel().getSnake().getHead();
+		head.turnDown();
 	}
 	
 	public void left(){
-		BoardModel board=MainController.getBoardModel();
-		board.left();
+		SnakeHead head=MainController.getBoardModel().getSnake().getHead();
+		head.turnLeft();
 	}
 	
 	public void right(){
-		BoardModel board=MainController.getBoardModel();
-		board.right();
+		SnakeHead head=MainController.getBoardModel().getSnake().getHead();
+		head.turnRight();
 	}
 	
 

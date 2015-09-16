@@ -1,5 +1,15 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Observable;
 
@@ -15,10 +25,24 @@ public class GameModel extends Observable{
 		board.initial();
 	}
 	
-	public void gameOver(){
-		
+	public void gameOver(int result){
+		File file=new File("src/GameRecord");
+		try {
+			RecordPO record;
+			ObjectInputStream reader;
+			if(file.length()!=0){
+				reader=new ObjectInputStream(new FileInputStream(file));
+				record=(RecordPO) reader.readObject();
+			}
+			else
+				record=new RecordPO();
+			record.addRecord(result);
+			ObjectOutputStream writer=new ObjectOutputStream(new FileOutputStream(file));
+			writer.writeObject(record);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
 	
 	
 	
@@ -30,6 +54,11 @@ public class GameModel extends Observable{
 		
 		super.setChanged();
 		super.notifyObservers(message);
+		
+	}
+
+	public void gameOver(Player player) {
+		
 		
 	}
 

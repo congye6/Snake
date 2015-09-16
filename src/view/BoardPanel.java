@@ -19,22 +19,26 @@ public class BoardPanel extends JPanel implements Observer{
 	private static final  int HEIGHT_OF_BOARD=400; 
 	private static final  int WIDTH_OF_EDGE=50; 
 	private static final  int WIDTH_OF_CHESS=20;
+	
+	private int snakeLength=2;
 
 	private List<SnakeVO> displayList;
 	private List<SnakeVO> walls;
+	private SnakeVO food;
 	
 	private JButton startButton=new JButton(Images.START_BUTTON);
 	private JButton wall1Button=new JButton(Images.WALL1);
 	private JButton wall2Button=new JButton(Images.WALL2);
+	private JButton overButton=new JButton("over");
 	
 	public BoardPanel() {
 		this.setLayout(null);
-		startButton.setBounds(HEIGHT_OF_BOARD, HEIGHT_OF_BOARD+HEIGHT_OF_TITLE,
+		startButton.setBounds(MainFrame.WIDTH-2*WIDTH_OF_EDGE, 0,
 								WIDTH_OF_EDGE, WIDTH_OF_EDGE);
 		startButton.addActionListener(new StartButtonListener());
 		startButton.setContentAreaFilled(false);
 		this.add(startButton);
-		wall1Button.setBounds(HEIGHT_OF_BOARD+WIDTH_OF_EDGE, HEIGHT_OF_BOARD+HEIGHT_OF_TITLE,
+		wall1Button.setBounds(HEIGHT_OF_BOARD-2*WIDTH_OF_EDGE, HEIGHT_OF_BOARD+HEIGHT_OF_TITLE,
 				WIDTH_OF_EDGE, WIDTH_OF_EDGE);
 		wall1Button.addActionListener(new ActionListener(){
 
@@ -60,12 +64,20 @@ public class BoardPanel extends JPanel implements Observer{
 		});
 		wall2Button.setContentAreaFilled(false);
 		this.add(wall2Button);
+		overButton.setBounds(MainFrame.WIDTH-WIDTH_OF_EDGE, 0,
+				WIDTH_OF_EDGE, WIDTH_OF_EDGE);
+		overButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		this.add(overButton);
 	}
 	
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		
 		/**
 		 * 背景
 		 */
@@ -109,6 +121,10 @@ public class BoardPanel extends JPanel implements Observer{
 		if(displayList==null)
 			return;
 		
+		//食物
+		if(food!=null)
+			displayList.add(food);
+		
 		for(SnakeVO vo:displayList){
 			
 			int x=vo.getX();
@@ -116,16 +132,28 @@ public class BoardPanel extends JPanel implements Observer{
 			g.drawImage(Images.getDisplayImage(vo.getDisplayState()),
 					WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
 		}
+		
+		//计数
+		g.drawImage(Images.NUMBER[snakeLength%10], MainFrame.WIDTH-4*WIDTH_OF_EDGE, 0, null);
+		if(snakeLength>=10){
+			g.drawImage(Images.NUMBER[snakeLength/10], MainFrame.WIDTH-5*WIDTH_OF_EDGE, 0, null);
+		}
+		
 		MainFrame.getFrame().requestFocus();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
 		UpdateMessage message=(UpdateMessage)arg;
 		if(message.getKey().equals("walls"))
 			walls=(List<SnakeVO>)message.getValue();
-		else
+		else if(message.getKey().equals("snake"))
 			displayList=(List<SnakeVO>)message.getValue();
+		else if(message.getKey().equals("snakeLength"))
+			snakeLength=(int)message.getValue();
+		else if(message.getKey().equals("food"))
+			food=(SnakeVO)message.getValue();
 		
 		repaint();
 	}

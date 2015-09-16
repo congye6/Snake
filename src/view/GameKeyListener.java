@@ -11,7 +11,6 @@ public class GameKeyListener extends KeyAdapter{
 	
 	@Override
 	public void keyPressed(KeyEvent e){
-		System.out.println("enter");
 		if(e.getKeyCode()==KeyEvent.VK_ENTER)
 			gameController.startGame();
 	}

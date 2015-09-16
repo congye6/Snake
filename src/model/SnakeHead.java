@@ -49,6 +49,34 @@ public class SnakeHead {
 			x=MAX_X;
 	}
 	
+	/**
+	 * 控制方向
+	 * @author congye6
+	 */
+	public void turnUp(){
+		if(this.getDirection()==Direction.DOWN)
+			return;
+		this.setDirection(Direction.UP);
+	}
+	
+	public void turnDown(){
+		if(this.getDirection()==Direction.UP)
+			return;
+		this.setDirection(Direction.DOWN);
+	}
+	
+	public void turnLeft(){
+		if(this.getDirection()==Direction.RIGHT)
+			return;
+		this.setDirection(Direction.LEFT);
+	}
+	
+	public void turnRight(){
+		if(this.getDirection()==Direction.LEFT)
+			return;
+		this.setDirection(Direction.RIGHT);
+	}
+	
 	
 	
 	public void setDirection(Direction headDirection) {

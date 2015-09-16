@@ -26,7 +26,7 @@ public class MainFrame {
 		frame.add(board);
 		frame.addKeyListener(new MyKeyListener());
 		frame.addKeyListener(new GameKeyListener());
-
+        frame.setUndecorated(true);
 		frame.setVisible(true);
 	}
 	

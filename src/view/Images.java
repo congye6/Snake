@@ -17,7 +17,14 @@ public class Images {
 	static final ImageIcon START_BUTTON=new ImageIcon("image/start.png");
 	static final ImageIcon WALL1=new ImageIcon("image/wall1.png");
 	static final ImageIcon WALL2=new ImageIcon("image/wall2.png");
+	static final Image NUMBER[]=new Image[10];
 	
+	
+	static{
+		for(int i=0;i<10;i++){
+			NUMBER[i]=createImage(i+"");
+		}
+	}
 	
 	private static Image createImage(String name){
 		Image image=new ImageIcon("image/"+name+".png").getImage();

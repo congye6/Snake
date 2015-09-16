@@ -14,5 +14,7 @@ public class Snake {
 		board.setGame(game);
 		board.addObserver(ui.getBoard());
 		board.getWall().addObserver(ui.getBoard());
+		board.getFood().addObserver(ui.getBoard());
+		board.getSnake().addObserver(ui.getBoard());
 	}
 }

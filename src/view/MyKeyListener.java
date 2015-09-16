@@ -28,7 +28,6 @@ public class MyKeyListener extends KeyAdapter{
 	
 	@Override
 	public void keyPressed(KeyEvent e){
-		System.out.println("实现监听");
 		if(!keyMap.containsKey(e.getKeyCode()))
 			return;
 		try {
