@@ -50,6 +50,7 @@ public class GameModel extends Observable{
 	 * 通知更新方法，请在子类中需要通知观察者的地方调用此方法
 	 * @param data
 	 */
+	@SuppressWarnings("unused")
 	private void updateChange(List<SnakePO> message){
 		
 		super.setChanged();

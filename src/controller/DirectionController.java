@@ -3,7 +3,7 @@ package controller;
 
 import model.SnakeHead;
 
-public class BoardController {
+public class DirectionController {
 	
 	
 	public void up(){

@@ -16,7 +16,9 @@ public class SnakeModel extends BaseModel{
 	private Thread move;
 	private BoardModel board;
 	private Player player;
+	private GameType gameType=GameType.SINGLE;
 	
+
 	public SnakeModel(BoardModel boardModel,Player player) {
 		super();
 		this.board = boardModel;
@@ -62,16 +64,16 @@ public class SnakeModel extends BaseModel{
 							snake.remove(0);
 						else{
 							board.eatFood();
-							SnakeModel.this.updateChange(new UpdateMessage("snakeLength",snake.size()));
+							SnakeModel.this.updateChange(new UpdateMessage(player.getLengthKey(),snake.size()));
 						}
 							
 						//撞墙
-						if(board.getWall().isWall(head.getX(),head.getY())||isSnake(head.getX(),head.getY())){
+						if(board.getWall().isWall(head.getX(),head.getY())||board.isSnake(head.getX(),head.getY())){
 							board.over(player,snake.size());
 							break;
 						}
 						List<SnakeVO> snakeDisplay=displaySnake();
-						SnakeModel.this.updateChange(new UpdateMessage("snake", snakeDisplay));
+						SnakeModel.this.updateChange(new UpdateMessage(player.getKey(), snakeDisplay));
 						Thread.sleep(100);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -82,44 +84,54 @@ public class SnakeModel extends BaseModel{
 		move.start();
 	}
 	
+	public void initialSnake() {
+		if(gameType==GameType.SINGLE)
+			this.randomSnake();
+		else
+			this.staticSnake();
+	}
+	
+	//单人随机生成位置
 	private void randomSnake(){
 		int randomX=(int)(Math.random()*20)+10;
 		int randomY=(int)(Math.random()*7)+7;
+		generateSnake(randomX, randomY);
+	}
+	
+	//双人固定位置
+	private void staticSnake(){
+		generateSnake(player.getX(), player.getY());
+	}
+	
+	private void generateSnake(int x,int y){
 		snake=new ArrayList<>();
-		head=new SnakeHead(randomX, randomY, Direction.DOWN);
-		snake.add(new SnakePO(randomX, randomY-1));
-		snake.add(new SnakePO(randomX, randomY));
+		head=new SnakeHead(x, y, Direction.DOWN);
+		snake.add(new SnakePO(x, y-1));
+		snake.add(new SnakePO(x, y));
 		List<SnakeVO> snakeDisplay=displaySnake();
-		this.updateChange(new UpdateMessage("snake", snakeDisplay));
-		this.updateChange(new UpdateMessage("snakeLength",snake.size()));
+		this.updateChange(new UpdateMessage(player.getKey(), snakeDisplay));
+		this.updateChange(new UpdateMessage(player.getLengthKey(),snake.size()));
 	}
-	
-	
-	
-	public void initialSnake() {
-		this.randomSnake();
-	}
-	
-	
-	
-	private void  doubleSnake(){
-		
-	}
-	
 	
 	public boolean isSnake(int x,int y){
+		
 		for(int i=0;i<snake.size()-1;i++){
-			SnakePO body=snake.get(i);
-			if(body.getX()==x&&body.getY()==y){
-				return true;
+		SnakePO body=snake.get(i);
+		if(body.getX()==x&&body.getY()==y){
+			return true;
 			}
-				
 		}
+		
 		return false;
 	}
 	
+	
 	public SnakeHead getHead(){
 		return head;
+	}
+	
+	public int size(){
+		return snake.size();
 	}
 	
 	private List<SnakeVO> displaySnake(){
@@ -131,5 +143,9 @@ public class SnakeModel extends BaseModel{
 		SnakePO head=snake.get(snake.size()-1);
 		displayList.add(new SnakeVO(DisplayState.HEAD, head.getX(), head.getY()));
 		return displayList;
+	}
+	
+	public void setGameType(GameType gameType) {
+		this.gameType = gameType;
 	}
 }

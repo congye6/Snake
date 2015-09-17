@@ -30,14 +30,20 @@ public class BoardPanel extends JPanel implements Observer{
 	private JButton wall1Button=new JButton(Images.WALL1);
 	private JButton wall2Button=new JButton(Images.WALL2);
 	private JButton overButton=new JButton("over");
+	private JButton singleTypeButton=new JButton("single");
+	private JButton doubleTypeButton=new JButton("double");
 	
 	public BoardPanel() {
+		
+		//开始
 		this.setLayout(null);
 		startButton.setBounds(MainFrame.WIDTH-2*WIDTH_OF_EDGE, 0,
 								WIDTH_OF_EDGE, WIDTH_OF_EDGE);
 		startButton.addActionListener(new StartButtonListener());
 		startButton.setContentAreaFilled(false);
 		this.add(startButton);
+		
+		//选择关卡
 		wall1Button.setBounds(HEIGHT_OF_BOARD-2*WIDTH_OF_EDGE, HEIGHT_OF_BOARD+HEIGHT_OF_TITLE,
 				WIDTH_OF_EDGE, WIDTH_OF_EDGE);
 		wall1Button.addActionListener(new ActionListener(){
@@ -64,6 +70,8 @@ public class BoardPanel extends JPanel implements Observer{
 		});
 		wall2Button.setContentAreaFilled(false);
 		this.add(wall2Button);
+		
+		//关闭
 		overButton.setBounds(MainFrame.WIDTH-WIDTH_OF_EDGE, 0,
 				WIDTH_OF_EDGE, WIDTH_OF_EDGE);
 		overButton.addActionListener(new ActionListener(){
@@ -73,6 +81,11 @@ public class BoardPanel extends JPanel implements Observer{
 			}
 		});
 		this.add(overButton);
+		
+		//选择单双人
+	
+		
+		
 	}
 	
 	@Override

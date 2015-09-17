@@ -7,6 +7,7 @@ public class BoardModel extends BaseModel{
 	private GameType gameType=GameType.SINGLE;
 	
 	private SnakeModel snake=new SnakeModel(this,Player.PLAY1);
+	private SnakeModel snake2;
 	private Wall wall=new Wall();
 	private Food food=new Food(this);
 
@@ -20,6 +21,8 @@ public class BoardModel extends BaseModel{
 		snake.initialSnake();
 		food.createFood();
 		snake.move();
+		if(gameType==GameType.DOUBLE)
+			snake2.move();
 	}
 
 	public void setGame(GameModel game) {
@@ -31,11 +34,30 @@ public class BoardModel extends BaseModel{
 		food.createFood();
 	}
 	
+	public SnakeModel newSnake(){
+		snake2=new SnakeModel(this, Player.PLAY2);
+		return snake2;
+	}
+	
 	public void over(Player player,int result) {
 		if(gameType==GameType.DOUBLE)
 			game.gameOver(player);
 		else
 			game.gameOver(result);
+	}
+	
+	public void setGameType(GameType type){
+		this.gameType=type;
+		snake.setGameType(type);
+		snake2.setGameType(type);
+	}
+	
+	
+	public boolean isSnake(int x,int y){
+		if(gameType==GameType.SINGLE)
+			return snake.isSnake(x, y);
+		else
+			return snake.isSnake(x, y)&&snake2.isSnake(x, y);
 	}
 	
 	
@@ -47,8 +69,16 @@ public class BoardModel extends BaseModel{
 		return snake;
 	}
 	
+	public SnakeModel getSnake2(){
+		return snake2;
+	}
+	
 	public Food getFood(){
 		return food;
+	}
+
+	public void deleteSnake() {
+		snake2=null;
 	}
 
 }

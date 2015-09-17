@@ -6,20 +6,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import controller.BoardController;
-import controller.GameController;
+import controller.DirectionController;
 
 public class MyKeyListener extends KeyAdapter{
 
-	private BoardController directionController=new BoardController();
+	private DirectionController directionController=new DirectionController();
 	
 	private static Map<Integer,Method> keyMap=new HashMap<Integer,Method>();
 	static{
 		try {
-			keyMap.put(KeyEvent.VK_UP, BoardController.class.getMethod("up"));
-			keyMap.put(KeyEvent.VK_DOWN, BoardController.class.getMethod("down"));
-			keyMap.put(KeyEvent.VK_LEFT,BoardController.class.getMethod("left"));
-			keyMap.put(KeyEvent.VK_RIGHT, BoardController.class.getMethod("right"));
+			keyMap.put(KeyEvent.VK_UP, DirectionController.class.getMethod("up"));
+			keyMap.put(KeyEvent.VK_DOWN, DirectionController.class.getMethod("down"));
+			keyMap.put(KeyEvent.VK_LEFT,DirectionController.class.getMethod("left"));
+			keyMap.put(KeyEvent.VK_RIGHT, DirectionController.class.getMethod("right"));
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
