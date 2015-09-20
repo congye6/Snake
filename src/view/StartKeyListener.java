@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import controller.GameController;
 
-public class GameKeyListener extends KeyAdapter{
+public class StartKeyListener extends KeyAdapter{
 
 	private GameController gameController=new GameController();
 	

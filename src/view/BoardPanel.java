@@ -9,7 +9,9 @@ import java.util.Observer;
 
 import javax.swing.*;
 
+import controller.GameTypeController;
 import controller.WallController;
+import model.GameType;
 import model.UpdateMessage;
 
 public class BoardPanel extends JPanel implements Observer{
@@ -21,8 +23,9 @@ public class BoardPanel extends JPanel implements Observer{
 	private static final  int WIDTH_OF_CHESS=20;
 	
 	private int snakeLength=2;
-
+	private int snakeLength2=2;
 	private List<SnakeVO> displayList;
+	private List<SnakeVO> displayList2;
 	private List<SnakeVO> walls;
 	private SnakeVO food;
 	
@@ -32,6 +35,8 @@ public class BoardPanel extends JPanel implements Observer{
 	private JButton overButton=new JButton("over");
 	private JButton singleTypeButton=new JButton("single");
 	private JButton doubleTypeButton=new JButton("double");
+	private GameType gameType;
+	
 	
 	public BoardPanel() {
 		
@@ -83,8 +88,31 @@ public class BoardPanel extends JPanel implements Observer{
 		this.add(overButton);
 		
 		//选择单双人
-	
+		singleTypeButton.setBounds(MainFrame.WIDTH/2-20, MainFrame.HEIGHT-WIDTH_OF_EDGE-20,
+				WIDTH_OF_EDGE*2,WIDTH_OF_EDGE/2);
+		singleTypeButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GameTypeController controller=new GameTypeController();
+				controller.setSingle();
+				
+			}
+		});
+		this.add(singleTypeButton);
 		
+		doubleTypeButton.setBounds(MainFrame.WIDTH/2-20, MainFrame.HEIGHT-WIDTH_OF_EDGE+20,
+				WIDTH_OF_EDGE*2,WIDTH_OF_EDGE/2);
+		doubleTypeButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GameTypeController controller=new GameTypeController();
+				controller.setDouble(BoardPanel.this);
+				
+			}
+		});
+		this.add(doubleTypeButton);
 		
 	}
 	
@@ -131,8 +159,11 @@ public class BoardPanel extends JPanel implements Observer{
 		/**
 		 * 蛇
 		 */
-		if(displayList==null)
+		if(displayList==null){
+			MainFrame.getFrame().requestFocus();
 			return;
+		}
+			
 		
 		//食物
 		if(food!=null)
@@ -147,10 +178,32 @@ public class BoardPanel extends JPanel implements Observer{
 		}
 		
 		//计数
-		g.drawImage(Images.NUMBER[snakeLength%10], MainFrame.WIDTH-4*WIDTH_OF_EDGE, 0, null);
+		g.drawImage(Images.NUMBER[snakeLength%10], 3*WIDTH_OF_EDGE, 0, null);
 		if(snakeLength>=10){
-			g.drawImage(Images.NUMBER[snakeLength/10], MainFrame.WIDTH-5*WIDTH_OF_EDGE, 0, null);
+			g.drawImage(Images.NUMBER[snakeLength/10], 2*WIDTH_OF_EDGE, 0, null);
 		}
+		
+		
+		//player2
+		if(gameType==GameType.SINGLE||displayList2==null){
+			MainFrame.getFrame().requestFocus();
+			return;
+		}
+		
+		for(SnakeVO vo:displayList2){
+			
+			int x=vo.getX();
+			int y=vo.getY();
+			g.drawImage(Images.getDisplayImage(vo.getDisplayState()),
+					WIDTH_OF_EDGE+WIDTH_OF_CHESS*x, WIDTH_OF_EDGE+WIDTH_OF_CHESS*y, null);
+		}	
+		
+		g.drawImage(Images.NUMBER[snakeLength2%10], MainFrame.WIDTH-4*WIDTH_OF_EDGE, 0, null);
+		
+		if(snakeLength2>=10){
+			g.drawImage(Images.NUMBER[snakeLength2/10], MainFrame.WIDTH-5*WIDTH_OF_EDGE, 0, null);
+		}
+		
 		
 		MainFrame.getFrame().requestFocus();
 	}
@@ -163,10 +216,16 @@ public class BoardPanel extends JPanel implements Observer{
 			walls=(List<SnakeVO>)message.getValue();
 		else if(message.getKey().equals("snake"))
 			displayList=(List<SnakeVO>)message.getValue();
+		else if(message.getKey().equals("snake2"))
+			displayList2=(List<SnakeVO>)message.getValue();
 		else if(message.getKey().equals("snakeLength"))
 			snakeLength=(int)message.getValue();
+		else if(message.getKey().equals("snakeLength2"))
+			snakeLength2=(int)message.getValue();
 		else if(message.getKey().equals("food"))
 			food=(SnakeVO)message.getValue();
+		else if(message.getKey().equals("gameType"))
+			gameType=(GameType)message.getValue();
 		
 		repaint();
 	}

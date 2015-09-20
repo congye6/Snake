@@ -22,7 +22,7 @@ public class Food extends BaseModel{
 		do{
 			randomX=(int)(Math.random()*35);
 			randomY=(int)(Math.random()*20);
-		}while(board.getWall().isWall(randomX,randomY)||board.getSnake().isSnake(randomX,randomY));
+		}while(board.getWall().isWall(randomX,randomY));
 		food=new SnakePO(randomX,randomY);
 		SnakeVO foodDisplay=this.displayFood();
 		this.updateChange(new UpdateMessage("food", foodDisplay));;

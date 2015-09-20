@@ -9,7 +9,7 @@ public enum Player {
 			return PLAY2;
 		}
 		
-	},PLAY2(20,5,"snake2","snakeLength2"){
+	},PLAY2(25,5,"snake2","snakeLength2"){
 
 		@Override
 		Player opposite() {

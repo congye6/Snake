@@ -9,8 +9,10 @@ public class GameTypeController {
 
 	public void setDouble(BoardPanel boardPanel){
 		BoardModel board=MainController.getBoardModel();
+		SnakeModel snake2=board.getSnake2();
+		if(snake2==null)
+			snake2=board.newSnake();
 		board.setGameType(GameType.DOUBLE);
-		SnakeModel snake2=board.newSnake();
 		snake2.addObserver(boardPanel);
 		MainController.getGameModel().gameStart();
 	}

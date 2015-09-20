@@ -8,7 +8,7 @@ import java.util.*;
 
 import controller.DirectionController;
 
-public class MyKeyListener extends KeyAdapter{
+public class DirectionKeyListener extends KeyAdapter{
 
 	private DirectionController directionController=new DirectionController();
 	
@@ -19,6 +19,10 @@ public class MyKeyListener extends KeyAdapter{
 			keyMap.put(KeyEvent.VK_DOWN, DirectionController.class.getMethod("down"));
 			keyMap.put(KeyEvent.VK_LEFT,DirectionController.class.getMethod("left"));
 			keyMap.put(KeyEvent.VK_RIGHT, DirectionController.class.getMethod("right"));
+			keyMap.put(KeyEvent.VK_W,DirectionController.class.getMethod("upPlayer2"));
+			keyMap.put(KeyEvent.VK_S,DirectionController.class.getMethod("downPlayer2"));
+			keyMap.put(KeyEvent.VK_A,DirectionController.class.getMethod("leftPlayer2"));
+			keyMap.put(KeyEvent.VK_D,DirectionController.class.getMethod("rightPlayer2"));
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}

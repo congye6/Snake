@@ -18,11 +18,14 @@ public class BoardModel extends BaseModel{
 	 */
 	 void initial(){
 		wall.buildWall();
-		snake.initialSnake();
 		food.createFood();
+		snake.initialSnake();
 		snake.move();
-		if(gameType==GameType.DOUBLE)
+		if(gameType==GameType.DOUBLE){
+			snake2.initialSnake();
 			snake2.move();
+		}
+			
 	}
 
 	public void setGame(GameModel game) {
@@ -40,24 +43,41 @@ public class BoardModel extends BaseModel{
 	}
 	
 	public void over(Player player,int result) {
-		if(gameType==GameType.DOUBLE)
+		if(gameType==GameType.DOUBLE){
+			if(player==Player.PLAY1)
+				snake2.stop();
+			else
+				snake.stop();
 			game.gameOver(player);
+		}
+		
 		else
 			game.gameOver(result);
+			
 	}
 	
 	public void setGameType(GameType type){
 		this.gameType=type;
 		snake.setGameType(type);
-		snake2.setGameType(type);
+		if(snake2!=null)
+			snake2.setGameType(type);
+		this.updateChange(new UpdateMessage("gameType", type));
 	}
 	
 	
-	public boolean isSnake(int x,int y){
+	public boolean isSnake(int x,int y,Player player){
 		if(gameType==GameType.SINGLE)
-			return snake.isSnake(x, y);
-		else
-			return snake.isSnake(x, y)&&snake2.isSnake(x, y);
+			return snake.isSnakeBody(x, y);
+		else{
+			boolean result=snake.isSnakeBody(x, y)||snake2.isSnakeBody(x, y);
+			if(player==Player.PLAY1)
+				result=result||snake2.isSnakeHead(x, y);
+			else
+				result=result||snake.isSnakeHead(x, y);
+			
+			return result;
+		}
+			
 	}
 	
 	

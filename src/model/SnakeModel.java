@@ -68,7 +68,7 @@ public class SnakeModel extends BaseModel{
 						}
 							
 						//撞墙
-						if(board.getWall().isWall(head.getX(),head.getY())||board.isSnake(head.getX(),head.getY())){
+						if(board.getWall().isWall(head.getX(),head.getY())||board.isSnake(head.getX(),head.getY(),player)){
 							board.over(player,snake.size());
 							break;
 						}
@@ -84,9 +84,19 @@ public class SnakeModel extends BaseModel{
 		move.start();
 	}
 	
+	public void stop(){
+		
+		if(move!=null){
+			move.stop();
+		}
+	}
+	
 	public void initialSnake() {
-		if(gameType==GameType.SINGLE)
+		if(gameType==GameType.SINGLE){
+			System.out.println("single"+player.name());
 			this.randomSnake();
+		}
+			
 		else
 			this.staticSnake();
 	}
@@ -113,16 +123,24 @@ public class SnakeModel extends BaseModel{
 		this.updateChange(new UpdateMessage(player.getLengthKey(),snake.size()));
 	}
 	
-	public boolean isSnake(int x,int y){
+	public boolean isSnakeBody(int x,int y){
 		
 		for(int i=0;i<snake.size()-1;i++){
-		SnakePO body=snake.get(i);
-		if(body.getX()==x&&body.getY()==y){
-			return true;
+			SnakePO body=snake.get(i);
+			if(body.getX()==x&&body.getY()==y){
+				return true;
 			}
 		}
 		
 		return false;
+	}
+	
+	public boolean isSnakeHead(int x,int y){
+		if(head.getX()==x&&head.getY()==y){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	

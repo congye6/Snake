@@ -24,8 +24,8 @@ public class MainFrame {
 		board=new BoardPanel();
 		
 		frame.add(board);
-		frame.addKeyListener(new MyKeyListener());
-		frame.addKeyListener(new GameKeyListener());
+		frame.addKeyListener(new DirectionKeyListener());
+		frame.addKeyListener(new StartKeyListener());
         frame.setUndecorated(true);
 		frame.setVisible(true);
 	}
